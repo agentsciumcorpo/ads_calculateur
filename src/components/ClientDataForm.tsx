@@ -1,30 +1,42 @@
 "use client";
 
 import { Dispatch } from "react";
-import { ClientData, AppAction } from "@/lib/types";
+import { ClientData, ExpertData, AppAction } from "@/lib/types";
 import InputField from "./InputField";
 
 interface ClientDataFormProps {
   clientData: ClientData;
+  expertData: ExpertData;
   dispatch: Dispatch<AppAction>;
 }
 
-export default function ClientDataForm({ clientData, dispatch }: ClientDataFormProps) {
-  const update = (field: keyof ClientData) => (value: number) => {
+export default function ClientDataForm({ clientData, expertData, dispatch }: ClientDataFormProps) {
+  const updateClient = (field: keyof ClientData) => (value: number) => {
     dispatch({ type: "UPDATE_CLIENT_DATA", field, value });
   };
 
+  const updateExpert = (field: keyof ExpertData) => (value: number) => {
+    dispatch({ type: "UPDATE_EXPERT_DATA", field, value });
+  };
+
   return (
-    <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">Données client</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <InputField label="Panier moyen" value={clientData.panierMoyen} onChange={update("panierMoyen")} unit="€" />
-        <InputField label="% Profit" value={clientData.profitPercent} onChange={update("profitPercent")} unit="%" />
-        <InputField label="% Lead → RDV" value={clientData.leadToRdvPercent} onChange={update("leadToRdvPercent")} unit="%" />
-        <InputField label="% RDV → Vente" value={clientData.rdvToVentePercent} onChange={update("rdvToVentePercent")} unit="%" />
-        <InputField label="Budget ads mensuel" value={clientData.budgetAdsMensuel} onChange={update("budgetAdsMensuel")} unit="€" />
-        <InputField label="Frais d'installation" value={clientData.fraisInstallation} onChange={update("fraisInstallation")} unit="€" />
-      </div>
-    </section>
+    <div className="space-y-6">
+      <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Données client</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <InputField label="Budget ads mensuel" value={clientData.budgetAdsMensuel} onChange={updateClient("budgetAdsMensuel")} unit="€" />
+          <InputField label="Panier moyen" value={clientData.panierMoyen} onChange={updateClient("panierMoyen")} unit="€" />
+          <InputField label="Marge nette" value={clientData.margeNettePercent} onChange={updateClient("margeNettePercent")} unit="%" />
+        </div>
+      </section>
+
+      <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Expertise IA</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <InputField label="Taux qualification IA" value={expertData.tauxQualificationPercent} onChange={updateExpert("tauxQualificationPercent")} unit="%" />
+          <InputField label="Taux closing IA" value={expertData.tauxClosingPercent} onChange={updateExpert("tauxClosingPercent")} unit="%" />
+        </div>
+      </section>
+    </div>
   );
 }

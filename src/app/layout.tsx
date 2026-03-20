@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Calculateur de Rentabilité — Agentscium",
-  description: "Simulez la rentabilité de vos prestations SMMA/IA avec 5 scénarios",
+  title: "Simulateur de Profit — Pubs Meta + IA",
+  description: "Montrez à vos clients combien de profit ils vont générer grâce aux pubs Meta et à l'IA",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

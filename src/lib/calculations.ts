@@ -1,32 +1,29 @@
-import { ClientData, ScenarioInputs, ScenarioResults, RemunerationResults } from "./types";
+import { ClientData, ExpertData, ScenarioResults, MonthlyProjection } from "./types";
 
 export function computeScenarioResults(
   clientData: ClientData,
-  scenario: ScenarioInputs
+  expertData: ExpertData,
+  cpl: number
 ): ScenarioResults {
-  if (scenario.cpl <= 0) {
-    return { volumeLeads: 0, volumeRdv: 0, volumeTransactions: 0, caGenere: 0, profitGenere: 0 };
+  if (cpl <= 0) {
+    return { volumeLeads: 0, prospectsQualifies: 0, clientsMois: 0, caGenere: 0, profitGenere: 0 };
   }
 
-  const volumeLeads = clientData.budgetAdsMensuel / scenario.cpl;
-  const volumeRdv = volumeLeads * (scenario.leadToRdvOverride / 100);
-  const volumeTransactions = volumeRdv * (scenario.rdvToVenteOverride / 100);
-  const caGenere = volumeTransactions * clientData.panierMoyen;
-  const profitGenere = caGenere * (clientData.profitPercent / 100);
+  const volumeLeads = clientData.budgetAdsMensuel / cpl;
+  const prospectsQualifies = volumeLeads * (expertData.tauxQualificationPercent / 100);
+  const clientsMois = prospectsQualifies * (expertData.tauxClosingPercent / 100);
+  const caGenere = clientsMois * clientData.panierMoyen;
+  const profitGenere = caGenere * (clientData.margeNettePercent / 100);
 
-  return { volumeLeads, volumeRdv, volumeTransactions, caGenere, profitGenere };
+  return { volumeLeads, prospectsQualifies, clientsMois, caGenere, profitGenere };
 }
 
-export function computeRemunerationResults(
-  scenarioResults: ScenarioResults,
-  clientData: ClientData,
-  commissionPercent: number
-): RemunerationResults {
-  const commissionPerformance = scenarioResults.profitGenere * (commissionPercent / 100);
-  const remunerationTotale = commissionPerformance + clientData.fraisInstallation;
-  const coutMarketingTotal = clientData.budgetAdsMensuel + commissionPerformance;
-  const profitNetSupplementaire = scenarioResults.profitGenere - coutMarketingTotal;
-  const probabilite50 = profitNetSupplementaire * 0.5;
-
-  return { commissionPerformance, remunerationTotale, coutMarketingTotal, profitNetSupplementaire, probabilite50 };
+export function computeProjection6Months(monthlyResults: ScenarioResults): MonthlyProjection[] {
+  return Array.from({ length: 6 }, (_, i) => ({
+    mois: i + 1,
+    leadsCumules: monthlyResults.volumeLeads * (i + 1),
+    clientsCumules: monthlyResults.clientsMois * (i + 1),
+    caCumule: monthlyResults.caGenere * (i + 1),
+    profitCumule: monthlyResults.profitGenere * (i + 1),
+  }));
 }

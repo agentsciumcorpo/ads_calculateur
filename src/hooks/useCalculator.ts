@@ -2,12 +2,13 @@
 
 import { useReducer } from "react";
 import { AppState, AppAction } from "@/lib/types";
-import { DEFAULT_CLIENT_DATA, DEFAULT_SCENARIOS, DEFAULT_COMMISSION_PERCENT } from "@/lib/constants";
+import { DEFAULT_CLIENT_DATA, DEFAULT_EXPERT_DATA, DEFAULT_SCENARIOS } from "@/lib/constants";
 
 const initialState: AppState = {
   clientData: DEFAULT_CLIENT_DATA,
+  expertData: DEFAULT_EXPERT_DATA,
   scenarios: DEFAULT_SCENARIOS,
-  commissionPercent: DEFAULT_COMMISSION_PERCENT,
+  selectedScenario: null,
 };
 
 function reducer(state: AppState, action: AppAction): AppState {
@@ -17,13 +18,18 @@ function reducer(state: AppState, action: AppAction): AppState {
         ...state,
         clientData: { ...state.clientData, [action.field]: action.value },
       };
-    case "UPDATE_SCENARIO": {
+    case "UPDATE_EXPERT_DATA":
+      return {
+        ...state,
+        expertData: { ...state.expertData, [action.field]: action.value },
+      };
+    case "UPDATE_SCENARIO_CPL": {
       const scenarios = [...state.scenarios] as AppState["scenarios"];
-      scenarios[action.index] = { ...scenarios[action.index], [action.field]: action.value };
+      scenarios[action.index] = { cpl: action.value };
       return { ...state, scenarios };
     }
-    case "UPDATE_COMMISSION":
-      return { ...state, commissionPercent: action.value };
+    case "SELECT_SCENARIO":
+      return { ...state, selectedScenario: action.index };
     default:
       return state;
   }
