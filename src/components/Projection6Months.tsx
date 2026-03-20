@@ -1,19 +1,20 @@
 "use client";
 
-import { MonthlyProjection } from "@/lib/types";
+import { MonthlyProjection, Currency } from "@/lib/types";
 import { formatCurrency, formatNumber } from "@/lib/format";
 
 interface Projection6MonthsProps {
   projections: MonthlyProjection[];
   scenarioLabel: string;
+  currency: Currency;
 }
 
-export default function Projection6Months({ projections, scenarioLabel }: Projection6MonthsProps) {
+export default function Projection6Months({ projections, scenarioLabel, currency }: Projection6MonthsProps) {
   const rows = [
-    { label: "Leads cumulés", key: "leadsCumules" as const, format: formatNumber },
-    { label: "Clients cumulés", key: "clientsCumules" as const, format: formatNumber },
-    { label: "CA cumulé", key: "caCumule" as const, format: formatCurrency },
-    { label: "Profit cumulé", key: "profitCumule" as const, format: formatCurrency },
+    { label: "Leads cumulés", key: "leadsCumules" as const, format: (v: number) => formatNumber(v) },
+    { label: "Clients cumulés", key: "clientsCumules" as const, format: (v: number) => formatNumber(v) },
+    { label: "CA cumulé", key: "caCumule" as const, format: (v: number) => formatCurrency(v, currency) },
+    { label: "Profit cumulé", key: "profitCumule" as const, format: (v: number) => formatCurrency(v, currency) },
   ];
 
   return (

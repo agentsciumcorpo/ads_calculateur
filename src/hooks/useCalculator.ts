@@ -9,6 +9,7 @@ const initialState: AppState = {
   expertData: DEFAULT_EXPERT_DATA,
   scenarios: DEFAULT_SCENARIOS,
   selectedScenario: null,
+  currency: "EUR",
 };
 
 function reducer(state: AppState, action: AppAction): AppState {
@@ -30,6 +31,8 @@ function reducer(state: AppState, action: AppAction): AppState {
     }
     case "SELECT_SCENARIO":
       return { ...state, selectedScenario: action.index };
+    case "SET_CURRENCY":
+      return { ...state, currency: action.currency };
     default:
       return state;
   }

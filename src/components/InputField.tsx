@@ -4,7 +4,7 @@ interface InputFieldProps {
   label: string;
   value: number;
   onChange: (value: number) => void;
-  unit?: "€" | "%";
+  unit?: string;
   min?: number;
   step?: number;
 }

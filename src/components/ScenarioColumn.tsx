@@ -1,9 +1,9 @@
 "use client";
 
 import { Dispatch } from "react";
-import { ClientData, ExpertData, ScenarioInputs, AppAction } from "@/lib/types";
+import { ClientData, ExpertData, ScenarioInputs, AppAction, Currency } from "@/lib/types";
 import { computeScenarioResults } from "@/lib/calculations";
-import { formatCurrency, formatNumber } from "@/lib/format";
+import { formatCurrency, formatNumber, currencySymbol } from "@/lib/format";
 import { SCENARIO_LABELS, SCENARIO_COLORS } from "@/lib/constants";
 import InputField from "./InputField";
 import ResultRow from "./ResultRow";
@@ -16,12 +16,15 @@ interface ScenarioColumnProps {
   isSelected: boolean;
   onSelect: () => void;
   dispatch: Dispatch<AppAction>;
+  currency: Currency;
+  showExpertRows?: boolean;
 }
 
-export default function ScenarioColumn({ index, scenario, clientData, expertData, isSelected, onSelect, dispatch }: ScenarioColumnProps) {
+export default function ScenarioColumn({ index, scenario, clientData, expertData, isSelected, onSelect, dispatch, currency, showExpertRows = true }: ScenarioColumnProps) {
   const results = computeScenarioResults(clientData, expertData, scenario.cpl);
   const colors = SCENARIO_COLORS[index];
   const label = SCENARIO_LABELS[index];
+  const sym = currencySymbol(currency);
 
   return (
     <div
@@ -39,7 +42,7 @@ export default function ScenarioColumn({ index, scenario, clientData, expertData
           label="Coût par lead"
           value={scenario.cpl}
           onChange={(value) => dispatch({ type: "UPDATE_SCENARIO_CPL", index, value })}
-          unit="€"
+          unit={sym}
         />
       </div>
 
@@ -47,12 +50,16 @@ export default function ScenarioColumn({ index, scenario, clientData, expertData
 
       <div className="space-y-0">
         <ResultRow label="Leads" value={formatNumber(results.volumeLeads)} />
-        <ResultRow label="Prospects qualifiés" value={formatNumber(results.prospectsQualifies)} />
-        <ResultRow label="Clients / mois" value={formatNumber(results.clientsMois)} />
-        <ResultRow label="CA généré" value={formatCurrency(results.caGenere)} />
+        {showExpertRows && (
+          <>
+            <ResultRow label="Prospects qualifiés" value={formatNumber(results.prospectsQualifies)} />
+            <ResultRow label="Clients / mois" value={formatNumber(results.clientsMois)} />
+          </>
+        )}
+        <ResultRow label="CA généré" value={formatCurrency(results.caGenere, currency)} />
         <ResultRow
           label="Profit généré"
-          value={formatCurrency(results.profitGenere)}
+          value={formatCurrency(results.profitGenere, currency)}
           colorMode="positive-negative"
           rawValue={results.profitGenere}
           bold

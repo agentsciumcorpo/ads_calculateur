@@ -9,7 +9,7 @@ import Projection6Months from "@/components/Projection6Months";
 import CurrencyToggle from "@/components/CurrencyToggle";
 import NavBar from "@/components/NavBar";
 
-export default function ClientPage() {
+export default function ExpertPage() {
   const { state, dispatch } = useCalculator();
 
   const selectedIndex = state.selectedScenario;
@@ -26,7 +26,7 @@ export default function ClientPage() {
           <h1 className="text-2xl font-bold text-gray-900">
             Simulateur de Profit — Pubs Meta + IA
           </h1>
-          <p className="text-sm text-gray-500 mt-1">Estimez combien de profit vous allez générer</p>
+          <p className="text-sm text-gray-500 mt-1">Montrez à vos clients combien de profit ils vont générer</p>
         </div>
         <div className="flex items-center gap-4">
           <CurrencyToggle currency={state.currency} dispatch={dispatch} />
@@ -39,9 +39,9 @@ export default function ClientPage() {
         expertData={state.expertData}
         dispatch={dispatch}
         currency={state.currency}
-        showExpertData={false}
+        showExpertData={true}
       />
-      <ScenarioTable state={state} dispatch={dispatch} showExpertRows={false} />
+      <ScenarioTable state={state} dispatch={dispatch} showExpertRows={true} />
 
       {projection && selectedIndex !== null && (
         <Projection6Months

@@ -7,9 +7,10 @@ import ScenarioColumn from "./ScenarioColumn";
 interface ScenarioTableProps {
   state: AppState;
   dispatch: Dispatch<AppAction>;
+  showExpertRows?: boolean;
 }
 
-export default function ScenarioTable({ state, dispatch }: ScenarioTableProps) {
+export default function ScenarioTable({ state, dispatch, showExpertRows = true }: ScenarioTableProps) {
   return (
     <section>
       <h2 className="text-lg font-semibold text-gray-900 mb-4">Scénarios</h2>
@@ -24,6 +25,8 @@ export default function ScenarioTable({ state, dispatch }: ScenarioTableProps) {
             isSelected={state.selectedScenario === i}
             onSelect={() => dispatch({ type: "SELECT_SCENARIO", index: i })}
             dispatch={dispatch}
+            currency={state.currency}
+            showExpertRows={showExpertRows}
           />
         ))}
       </div>

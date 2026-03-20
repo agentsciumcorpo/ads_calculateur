@@ -34,10 +34,14 @@ export interface AppState {
   expertData: ExpertData;
   scenarios: [ScenarioInputs, ScenarioInputs, ScenarioInputs];
   selectedScenario: number | null;
+  currency: Currency;
 }
+
+export type Currency = "EUR" | "USD";
 
 export type AppAction =
   | { type: "UPDATE_CLIENT_DATA"; field: keyof ClientData; value: number }
   | { type: "UPDATE_EXPERT_DATA"; field: keyof ExpertData; value: number }
   | { type: "UPDATE_SCENARIO_CPL"; index: number; value: number }
-  | { type: "SELECT_SCENARIO"; index: number };
+  | { type: "SELECT_SCENARIO"; index: number }
+  | { type: "SET_CURRENCY"; currency: Currency };
