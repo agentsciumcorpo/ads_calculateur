@@ -37,7 +37,7 @@ export interface AppState {
   currency: Currency;
 }
 
-export type Currency = "EUR" | "USD";
+export type Currency = "EUR" | "CAD";
 
 export type AppAction =
   | { type: "UPDATE_CLIENT_DATA"; field: keyof ClientData; value: number }

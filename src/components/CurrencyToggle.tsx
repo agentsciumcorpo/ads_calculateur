@@ -22,14 +22,14 @@ export default function CurrencyToggle({ currency, dispatch }: CurrencyTogglePro
         € EUR
       </button>
       <button
-        onClick={() => dispatch({ type: "SET_CURRENCY", currency: "USD" })}
+        onClick={() => dispatch({ type: "SET_CURRENCY", currency: "CAD" })}
         className={`px-3 py-1.5 font-medium transition-colors ${
-          currency === "USD"
+          currency === "CAD"
             ? "bg-blue-600 text-white"
             : "bg-white text-gray-600 hover:bg-gray-50"
         }`}
       >
-        $ USD
+        $CA
       </button>
     </div>
   );

@@ -22,5 +22,5 @@ export function formatNumber(value: number): string {
 }
 
 export function currencySymbol(currency: Currency): string {
-  return currency === "EUR" ? "€" : "$";
+  return currency === "EUR" ? "€" : "$CA";
 }
